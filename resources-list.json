@@ -1,0 +1,14 @@
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "result": {
+    "resources": [
+      {
+        "uri": "https://raw.githubusercontent.com/crabkiller/kb/main/data/Web%20Widget%20%E6%9E%B6%E6%9E%84%E4%B8%8E%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86.md",
+        "name": "Web Widget 架构与实现原理",
+        "description": "核心知识点：@web-widget 是基于 Web Components 的微模块解决方案，用于解决 Monorepo 跨团队协作、跨框架混合运行（React 中运行 Vue）及渐进式架构迁移问题。核心机制包括：容器化组件（自定义元素沙箱）、生命周期协议（bootstrap/mount/unmount）、状态机管理、适配器模式（toReact/toVue）。syncCacheProvider 用于 SSR 数据同步与注水，支持按需激活（Hydration）和多种渲染模式。",
+        "mimeType": "text/markdown"
+      }
+    ]
+  }
+}

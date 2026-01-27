@@ -11,9 +11,7 @@ app.use(bodyParser());
 
 // 采集接口
 router.post('/collect', async (ctx) => {
-  const { title, content } = ctx.request.body;
-
-  console.log('title', title, content);
+  const { title, content, tags = [] } = ctx.request.body;
 
   if (!title || !content) {
     ctx.status = 400;
@@ -22,7 +20,7 @@ router.post('/collect', async (ctx) => {
   }
 
   try {
-    const result = await storage.saveKnowledge(title, content);
+    const result = await storage.saveKnowledge(title, content, tags);
     ctx.body = {
       message: 'Knowledge collected successfully',
       data: result

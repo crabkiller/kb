@@ -35,7 +35,7 @@ class Storage {
     this.initialized = true;
   }
 
-  async saveKnowledge(filename, content) {
+  async saveKnowledge(filename, content, tags = []) {
     await this.init();
 
     const filePath = path.join(this.basePath, filename.endsWith('.md') ? filename : `${filename}.md`);
@@ -43,43 +43,72 @@ class Storage {
     // 1. 写入文件
     await fs.writeFile(filePath, content, 'utf8');
 
-    // 2. 更新 MCP 索引
-    await this.updateMcpIndex(filename, filePath);
+    // 2. 提取核心知识点摘要
+    const summary = this.extractSummary(content);
 
-    // 3. Git 同步
+    // 3. 更新 MCP 索引
+    await this.updateMcpIndex(filename, filePath, summary, tags);
+
+    // 4. Git 同步
     await this.syncToGithub(filename);
 
     return { filename, path: filePath };
   }
 
-  async updateMcpIndex(title, filePath) {
-    const indexPath = path.join(this.basePath, config.mcpIndexFile);
-    let index = [];
+  /**
+   * 从 Markdown 内容中提取「核心知识点」章节
+   * 用于 RAG 快速匹配，避免读取完整文件
+   */
+  extractSummary(content) {
+    // 匹配 "## 核心知识点" 到下一个 "##" 标题之间的内容
+    const summaryMatch = content.match(/##\s*核心知识点\s*\n([\s\S]*?)(?=\n##\s|\n#\s|$)/i);
+    if (summaryMatch && summaryMatch[1]) {
+      return summaryMatch[1].trim();
+    }
+    
+    // 如果没有找到核心知识点章节，尝试提取前 500 字符作为摘要
+    const cleanContent = content.replace(/^#.*\n/, '').trim();
+    return cleanContent.substring(0, 500) + (cleanContent.length > 500 ? '...' : '');
+  }
+
+  async updateMcpIndex(title, filePath, summary, tags = []) {
+    const indexPath = path.join(process.cwd(), config.mcpResourcesListFile);
+    let resources = [];
 
     try {
       const data = await fs.readFile(indexPath, 'utf8');
-      index = JSON.parse(data);
+      const json = JSON.parse(data);
+      resources = json.result.resources || [];
     } catch (err) {
-      // 文件不存在则创建新数组
+      // 文件不存在或格式错误则创建新数组
     }
 
-    const relativePath = path.relative(this.basePath, filePath);
-    const existingIndex = index.findIndex(item => item.path === relativePath);
+    const filename = path.basename(filePath);
+    const uri = `${config.githubRawBaseUrl}/${encodeURIComponent(filename)}`;
+    const existingIndex = resources.findIndex(item => item.uri === uri);
 
-    const metadata = {
-      title,
-      path: relativePath,
-      updatedAt: new Date().toISOString()
+    const resource = {
+      uri,
+      name: title,
+      description: `核心知识点：${summary}`,
+      mimeType: "text/markdown"
     };
 
     if (existingIndex > -1) {
-      index[existingIndex] = { ...index[existingIndex], ...metadata };
+      resources[existingIndex] = resource;
     } else {
-      metadata.createdAt = metadata.updatedAt;
-      index.push(metadata);
+      resources.push(resource);
     }
 
-    await fs.writeFile(indexPath, JSON.stringify(index, null, 2), 'utf8');
+    const output = {
+      jsonrpc: "2.0",
+      id: 1,
+      result: {
+        resources
+      }
+    };
+
+    await fs.writeFile(indexPath, JSON.stringify(output, null, 2), 'utf8');
   }
 
   async syncToGithub(filename) {
