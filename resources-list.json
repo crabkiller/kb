@@ -20,6 +20,12 @@
         "name": "Kubernetes (K8s) 核心概念与价值（全量思考版）",
         "description": "核心知识点：- **Kubernetes (K8s) 定义**：开源容器编排平台，用于自动化部署、扩展和管理容器化应用。\n- **架构组成**：\n  - **Control Plane (控制平面)**：决策中心。\n  - **Nodes (节点)**：运行环境，包含 Kubelet 和容器运行时。\n- **核心对象**：\n  - **Pod**：最小调度单位，共享网络和存储。\n  - **Controllers**：Deployment (无状态), StatefulSet (有状态), DaemonSet (全节点副本)。\n  - **Service & Ingress**：服务发现、负载均衡与外部路由管理。\n- **核心价值**：解决大规模容器管理中的自动化运维、服务发现、高可用自愈、资源利用率优化、版本发布风险控制及环境一致性问题。",
         "mimeType": "text/markdown"
+      },
+      {
+        "uri": "https://raw.githubusercontent.com/crabkiller/kb/main/data/CSS%20%E5%B8%83%E5%B1%80%E4%B8%8E%20Grid%20%E7%80%91%E5%B8%83%E6%B5%81%E6%B7%B1%E5%BA%A6%E8%A7%A3%E6%9E%90.md",
+        "name": "CSS 布局与 Grid 瀑布流深度解析",
+        "description": "核心知识点：- **Flex 布局收缩规则 (flex-shrink)**：\n  - 计算公式：`加权收缩量 = 溢出空间 * (flex-basis * flex-shrink) / 总加权值`。\n  - 默认 `flex-shrink: 1`。若所有子元素收缩比例之和小于 1，溢出空间不会被完全吸收。\n  - 易错点：`min-width` 默认为 `auto`，长文本溢出常导致收缩失效，需手动设为 `0`。\n- **Grid 布局核心特性**：\n  - **二维布局**：同时处理行和列。\n  - **自适应黑科技**：`repeat(auto-fill, minmax(200px, 1fr))` 实现无需媒体查询的响应式网格。\n  - **auto-fill vs auto-fit**：`auto-fill` 即使格子为空也保留（留白），`auto-fit` 会折叠空格子（拉伸）。\n- **Grid 瀑布流 (Masonry)**：\n  - `grid-template-rows: masonry` 是 Level 3 规范，允许网格行不再强制对齐，自动填充空隙。\n  - 目前仅 Firefox 实验性支持，生产环境通常需配合 JS 计算 `grid-row-end: span N`。\n- **面试易混淆点**：\n  - `flex: 1` 等价于 `flex-grow: 1; flex-shrink: 1; flex-basis: 0%;`。\n  - `flex-basis` 优先级高于 `width`，但受 `min/max-width` 限制。\n  - `margin: auto` 在 Flex/Grid 容器中可实现垂直水平双向居中。",
+        "mimeType": "text/markdown"
       }
     ]
   }
