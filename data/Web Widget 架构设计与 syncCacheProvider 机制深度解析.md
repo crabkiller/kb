@@ -19,8 +19,11 @@
 2. 设计思路和实现原理
 3. 如何支持多框架混合运行，比如 React 中使用 Vue
 
-**A**: > **AI 思考过程**：
-> I will first search for the `@web-widget` package in the codebase to understand its structure and usage. Then I will look for its implementation details and how it handles cross-framework components.
+**A**: <details>
+<summary>AI 思考过程</summary>
+
+I will first search for the `@web-widget` package in the codebase to understand its structure and usage. Then I will look for its implementation details and how it handles cross-framework components.
+</details>
 
 `@web-widget` 是稿定前端架构中的一套**微模块（Web Widget）解决方案**。它基于 Web Components 标准，旨在解决大型 Monorepo 项目中的跨团队协作、跨框架组件复用以及渐进式架构迁移等问题。
 
@@ -42,8 +45,11 @@
 
 **Q**: 以 @apps/gaoding-art/routes/create/index@route.tsx 为例，详细说明 web-widget 的渲染流程
 
-**A**: > **AI 思考过程**：
-> I will read the content of `apps/gaoding-art/routes/create/index@route.tsx` and its related files to trace the rendering flow of web-widget.
+**A**: <details>
+<summary>AI 思考过程</summary>
+
+I will read the content of `apps/gaoding-art/routes/create/index@route.tsx` and its related files to trace the rendering flow of web-widget.
+</details>
 
 以 `apps/gaoding-art/routes/create/index@route.tsx` 为例，`web-widget` 的渲染流程可以分为 **服务端预渲染（SSR）** 和 **客户端激活（Hydration）** 两个阶段。
 
@@ -64,8 +70,11 @@
 
 **Q**: toReact 具体实现代码
 
-**A**: > **AI 思考过程**：
-> I will search for the implementation of `toReact` in the codebase or node_modules to explain its internal logic.
+**A**: <details>
+<summary>AI 思考过程</summary>
+
+I will search for the implementation of `toReact` in the codebase or node_modules to explain its internal logic.
+</details>
 
 `toReact` 的本质是一个 **React 高阶组件 (HOC)**，它在 React 的生命周期内管理着一个 Vue 实例。
 
@@ -109,16 +118,19 @@ export function toReact(VueComponent) {
 }
 ```
 
-**Q**: web-widget 代码在 node_modules/.pnpm/@web-widget+web-widget@1.63.0_react-dom@19.1.0_react@19.1.0__react@19.1.0_unctx@2.4.1/node_modules/@web-widget/web-widget，根据实际代码分析实现细节，包括 syncCacheProvider 运行机制
+**Q**: web-widget 代码在 node_modules/.pnpm/@web-widget+web-widget@1.63.0_react-dom@19.1.0_react@19.1.0__react@19.1.0_unctx@2.4.1/node_modules/@web-widget/web-widget，根据实际代码 analysis 实现细节，包括 syncCacheProvider 运行机制
 
-**A**: > **AI 思考过程**：
-> I will explore the specified directory in `node_modules` and search for `syncCacheProvider` to analyze its implementation details.
+**A**: <details>
+<summary>AI 思考过程</summary>
+
+I will explore the specified directory in `node_modules` and search for `syncCacheProvider` to analyze its implementation details.
+</details>
 
 ### 1. syncCacheProvider 的核心运行机制
 `syncCacheProvider` 是 Web Widget 解决 **SSR 数据同步与脱水/注水** 的核心工具。它通过“环境识别”来实现不同的返回行为。
 
 #### 运行逻辑分析：
-1. **服务端（SSR）阶段**：执行 `fetcher`，阻塞当前 Widget 渲染直到返回结果，存入 `lifecycleCache`，序列化为 JSON 存放在 `<script type="application/json" as="state">` 中。
+1. **服务端（SSR）阶段**：执行 `fetcher`，阻塞当前 Widget 渲染直到返回结果，存入 `lifecycleCache`，序列化为 JSON 存放在 `<script type=\"application/json\" as=\"state\">` 中。
 2. **客户端（CSR）阶段**：读取 HTML 中的 JSON 状态恢复到 `lifecycleCache`。调用时若命中缓存则**立即同步返回**；若缓存失效则退化为普通的异步调用，返回 `Promise`。
 
 ### 2. Web Widget 容器实现细节 (HTMLWebWidgetElement)
