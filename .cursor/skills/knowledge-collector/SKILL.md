@@ -9,7 +9,7 @@ description: 将对话上下文总结为结构化的知识条目，并发送至�
 
 ## 指令 (Instructions)
 
-当用户请求保存知识或记录讨论内容时：
+当用户请求保存知识 or 记录讨论内容时：
 
 1. **内容整理 (Summarize)**：
    - **剔除知识采集内容**：如果对话中包含之前执行过的“采集”消息，需要忽略，不能纳入知识范畴。
@@ -17,7 +17,7 @@ description: 将对话上下文总结为结构化的知识条目，并发送至�
    - **源对话记录**：以 Q&A 形式记录**原始对话**过程，需要**全量的对话内容**，不做任何精简和修饰。**特别注意**：对话中的 AI 思考过程（`<thought>` 标签内容）必须转换为 Markdown 规范格式，建议使用：`> **AI 思考过程**：...`。
    - 最终 Markdown 文档结构应包含：`## 核心知识点` 和 `## 源对话记录 (Q&A)` 两个主要章节。
 2. **生成标题 (Generate Title)**：根据内容生成一个简洁、具有概括性的标题（将作为文件名，例如：“Koa 中间件实现原理”）。
-3. **构建 Payload**：创建一个包含 `title` 和 `content` 的 JSON 对象。
+3. **构建 Payload**：创建一个 `FormData` 对象，包含 `file`（Markdown 文件内容）和可选的 `title`。
 4. **发送至采集器 (Send)**：调用本地 API 接口保存知识。
 
 ## 检索知识 (Retrieval)
@@ -32,13 +32,10 @@ description: 将对话上下文总结为结构化的知识条目，并发送至�
 
 - **Endpoint**: `http://localhost:3001/collect`
 - **Method**: `POST`
+- **Content-Type**: `multipart/form-data`
 - **Request Body**:
-  ```json
-  {
-    "title": "Koa 中间件实现原理",
-    "content": "# Koa 中间件实现原理\n\n## 核心知识点\n- **洋葱模型**：Koa 中间件采用递归调用方式，请求从外向内流转，响应从内向外返回。\n- **Compose 函数**：通过 `koa-compose` 将多个异步函数组合成一个单一的执行链。\n\n## 源对话记录 (Q&A)\n\n**Q**: Koa 的中间件是怎么实现的？\n\n**A**: > **AI 思考过程**：\n> 用户询问 Koa 中间件的底层实现，我需要重点解释洋葱模型和 compose 函数的逻辑。\n\nKoa 的核心在于 `koa-compose` 模块..."
-  }
-  ```
+  - `file`: Markdown 文件 (必填)
+  - `title`: 知识标题 (可选，默认为文件名)
 
 - **Response (成功)**:
   ```json
@@ -48,7 +45,7 @@ description: 将对话上下文总结为结构化的知识条目，并发送至�
   }
   ```
 - **Response (失败)**:
-  - HTTP 400: `{ "error": "Title and content are required" }`
+  - HTTP 400: `{ "error": "File is required" }`
   - HTTP 500: `{ "error": "Internal server error" }`
 
 ## 响应状态检查 (Response Validation)
@@ -67,9 +64,10 @@ description: 将对话上下文总结为结构化的知识条目，并发送至�
 
 **Agent (成功场景)**:
 1. 分析对话，生成总结。
-2. 调用 `POST http://localhost:3001/collect`。
-3. 检查响应：收到 `200` 且 `message` 为成功。
-4. 回复用户："已成功将「RAG 优化策略总结」保存到知识库。"
+2. 构建 FormData，将总结内容作为文件上传。
+3. 调用 `POST http://localhost:3001/collect`。
+4. 检查响应：收到 `200` 且 `message` 为成功。
+5. 回复用户："已成功将「RAG 优化策略总结」保存到知识库。"
 
 **Agent (失败场景)**:
 1. 调用接口后收到 `500` 或 `error` 字段。

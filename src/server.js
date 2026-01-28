@@ -1,27 +1,35 @@
 const Koa = require('koa');
 const Router = require('@koa/router');
-const bodyParser = require('koa-bodyparser');
+const { koaBody } = require('koa-body');
+const fs = require('fs').promises;
 const config = require('./config');
 const storage = require('./storage');
 
 const app = new Koa();
 const router = new Router();
 
-app.use(bodyParser());
+app.use(koaBody({
+  multipart: true,
+  formidable: {
+    keepExtensions: true,
+  }
+}));
 
 // 采集接口
 router.post('/collect', async (ctx) => {
-  const { title, content, tags = [] } = ctx.request.body;
+  const { title: bodyTitle, tags = [] } = ctx.request.body;
+  const file = ctx.request.files?.file;
 
-  console.log('title', title, content);
-
-  if (!title || !content) {
+  if (!file) {
     ctx.status = 400;
-    ctx.body = { error: 'Title and content are required' };
+    ctx.body = { error: 'File is required' };
     return;
   }
 
   try {
+    const content = await fs.readFile(file.filepath, 'utf8');
+    const title = bodyTitle || file.originalFilename.replace(/\.md$/, '');
+
     const result = await storage.saveKnowledge(title, content, tags);
     ctx.body = {
       message: 'Knowledge collected successfully',
