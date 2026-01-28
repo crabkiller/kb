@@ -20,6 +20,12 @@
         "name": "Kubernetes (K8s) 深度解析：概念、架构与核心价值",
         "description": "核心知识点：### 1. K8s 核心架构与组件\n- **Control Plane (控制平面)**：集群决策中心，负责调度、状态维护及响应事件。\n- **Nodes (节点)**：实际运行应用的物理机或虚拟机，运行 Kubelet 和容器运行时（如 containerd）。\n- **Pod**：K8s 最小调度单元，支持多容器共享网络栈和存储卷。\n\n### 2. 控制器与资源管理\n- **Deployment**：管理无状态应用，支持滚动更新与副本控制。\n- **StatefulSet**：为有状态应用提供持久化标识和存储。\n- **Service**：提供稳定的逻辑集合入口，实现服务发现与负载均衡。\n- **Ingress**：集群外部流量的路由管理器（HTTP/HTTPS）。\n\n### 3. K8s 解决的核心问题\n- **自动化运维**：通过声明式配置实现大规模容器的自动管理。\n- **高可用与自愈**：自动检测并重启失败容器，或在健康节点重新调度 Pod。\n- **资源优化**：基于资源请求（Requests）和限制（Limits）实现智能调度，提高硬件利用率。\n- **零停机发布**：内置滚动更新机制，降低版本更替风险。\n- **环境解耦**：屏蔽底层基础设施差异，确保开发、测试、生产环境的一致性。",
         "mimeType": "text/markdown"
+      },
+      {
+        "uri": "https://raw.githubusercontent.com/crabkiller/kb/main/data/Kubernetes%20(K8s)%20%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5%E4%B8%8E%E4%BB%B7%E5%80%BC%EF%BC%88%E5%85%A8%E9%87%8F%E5%AF%B9%E8%AF%9D%E7%89%88%EF%BC%89.md",
+        "name": "Kubernetes (K8s) 核心概念与价值（全量对话版）",
+        "description": "核心知识点：- **Kubernetes (K8s) 定义**：开源容器编排平台，用于自动化部署、扩展和管理容器化应用。\n- **架构组成**：\n  - **Control Plane (控制平面)**：决策中心。\n  - **Nodes (节点)**：运行环境，包含 Kubelet 和容器运行时。\n- **核心对象**：\n  - **Pod**：最小调度单位，共享网络和存储。\n  - **Controllers**：Deployment (无状态), StatefulSet (有状态), DaemonSet (全节点副本)。\n  - **Service & Ingress**：服务发现、负载均衡与外部路由管理。\n  - **ConfigMap & Secret**：配置管理。\n  - **PV & PVC**：持久化存储抽象。\n- **核心价值**：解决大规模容器管理中的自动化运维、服务发现、高可用自愈、资源利用率优化、版本发布风险控制及环境一致性问题。",
+        "mimeType": "text/markdown"
       }
     ]
   }
