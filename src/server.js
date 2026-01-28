@@ -13,6 +13,8 @@ app.use(bodyParser());
 router.post('/collect', async (ctx) => {
   const { title, content, tags = [] } = ctx.request.body;
 
+  console.log('title', title, content);
+
   if (!title || !content) {
     ctx.status = 400;
     ctx.body = { error: 'Title and content are required' };
