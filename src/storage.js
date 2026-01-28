@@ -38,7 +38,13 @@ class Storage {
   async saveKnowledge(filename, content, tags = []) {
     await this.init();
 
-    const filePath = path.join(this.basePath, filename.endsWith('.md') ? filename : `${filename}.md`);
+    // 强制清理文件名中的非法字符，防止路径注入或写入失败
+    const safeFilename = filename
+      .replace(/[\\/:\*\?"<>|]/g, '-') // 替换非法字符为 -
+      .replace(/^\.+|\.+$/g, '')      // 移除首尾的点
+      .trim();
+
+    const filePath = path.join(this.basePath, safeFilename.endsWith('.md') ? safeFilename : `${safeFilename}.md`);
     console.log('filePath', filePath);
 
     // 1. 写入文件
