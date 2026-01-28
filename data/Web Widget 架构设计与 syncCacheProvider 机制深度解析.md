@@ -19,9 +19,9 @@
 2. 设计思路和实现原理
 3. 如何支持多框架混合运行，比如 React 中使用 Vue
 
-**A**: <thought>
-I will first search for the `@web-widget` package in the codebase to understand its structure and usage. Then I will look for its implementation details and how it handles cross-framework components.
-</thought>
+**A**: > **AI 思考过程**：
+> I will first search for the `@web-widget` package in the codebase to understand its structure and usage. Then I will look for its implementation details and how it handles cross-framework components.
+
 `@web-widget` 是稿定前端架构中的一套**微模块（Web Widget）解决方案**。它基于 Web Components 标准，旨在解决大型 Monorepo 项目中的跨团队协作、跨框架组件复用以及渐进式架构迁移等问题。
 
 ### 1. 解决什么问题
@@ -42,9 +42,9 @@ I will first search for the `@web-widget` package in the codebase to understand 
 
 **Q**: 以 @apps/gaoding-art/routes/create/index@route.tsx 为例，详细说明 web-widget 的渲染流程
 
-**A**: <thought>
-I will read the content of `apps/gaoding-art/routes/create/index@route.tsx` and its related files to trace the rendering flow of web-widget.
-</thought>
+**A**: > **AI 思考过程**：
+> I will read the content of `apps/gaoding-art/routes/create/index@route.tsx` and its related files to trace the rendering flow of web-widget.
+
 以 `apps/gaoding-art/routes/create/index@route.tsx` 为例，`web-widget` 的渲染流程可以分为 **服务端预渲染（SSR）** 和 **客户端激活（Hydration）** 两个阶段。
 
 ### 1. 渲染架构概览
@@ -64,9 +64,9 @@ I will read the content of `apps/gaoding-art/routes/create/index@route.tsx` and 
 
 **Q**: toReact 具体实现代码
 
-**A**: <thought>
-I will search for the implementation of `toReact` in the codebase or node_modules to explain its internal logic.
-</thought>
+**A**: > **AI 思考过程**：
+> I will search for the implementation of `toReact` in the codebase or node_modules to explain its internal logic.
+
 `toReact` 的本质是一个 **React 高阶组件 (HOC)**，它在 React 的生命周期内管理着一个 Vue 实例。
 
 ### toReact 核心实现原理（简化版）
@@ -111,9 +111,9 @@ export function toReact(VueComponent) {
 
 **Q**: web-widget 代码在 node_modules/.pnpm/@web-widget+web-widget@1.63.0_react-dom@19.1.0_react@19.1.0__react@19.1.0_unctx@2.4.1/node_modules/@web-widget/web-widget，根据实际代码分析实现细节，包括 syncCacheProvider 运行机制
 
-**A**: <thought>
-I will explore the specified directory in `node_modules` and search for `syncCacheProvider` to analyze its implementation details.
-</thought>
+**A**: > **AI 思考过程**：
+> I will explore the specified directory in `node_modules` and search for `syncCacheProvider` to analyze its implementation details.
+
 ### 1. syncCacheProvider 的核心运行机制
 `syncCacheProvider` 是 Web Widget 解决 **SSR 数据同步与脱水/注水** 的核心工具。它通过“环境识别”来实现不同的返回行为。
 
