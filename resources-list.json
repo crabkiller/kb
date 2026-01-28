@@ -26,6 +26,12 @@
         "name": "Kubernetes (K8s) 核心概念与价值（全量对话版）",
         "description": "核心知识点：- **Kubernetes (K8s) 定义**：开源容器编排平台，用于自动化部署、扩展和管理容器化应用。\n- **架构组成**：\n  - **Control Plane (控制平面)**：决策中心。\n  - **Nodes (节点)**：运行环境，包含 Kubelet 和容器运行时。\n- **核心对象**：\n  - **Pod**：最小调度单位，共享网络和存储。\n  - **Controllers**：Deployment (无状态), StatefulSet (有状态), DaemonSet (全节点副本)。\n  - **Service & Ingress**：服务发现、负载均衡与外部路由管理。\n  - **ConfigMap & Secret**：配置管理。\n  - **PV & PVC**：持久化存储抽象。\n- **核心价值**：解决大规模容器管理中的自动化运维、服务发现、高可用自愈、资源利用率优化、版本发布风险控制及环境一致性问题。",
         "mimeType": "text/markdown"
+      },
+      {
+        "uri": "https://raw.githubusercontent.com/crabkiller/kb/main/data/Web%20Widget%20%E6%9E%B6%E6%9E%84%E4%B8%8E%20syncCacheProvider%20%E6%9C%BA%E5%88%B6%E6%B7%B1%E5%BA%A6%E8%A7%A3%E6%9E%90.md",
+        "name": "Web Widget 架构与 syncCacheProvider 机制深度解析",
+        "description": "核心知识点：- **微模块架构定位**：`@web-widget` 是稿定前端基于 Web Components 的微模块方案，核心解决 Monorepo 中的跨框架混合运行（如 React 中运行 Vue）、渐进式迁移及组件解耦部署问题。\n- **实现原理**：\n  - **HTMLWebWidgetElement**：自定义元素作为物理容器，通过 `import` 属性动态加载模块，内置状态机管理（LOADED, BOOTSTRAPPED, MOUNTED）。\n  - **生命周期协议**：标准化 `bootstrap`、`mount`、`unmount` 钩子，屏蔽框架渲染差异。\n  - **toReact 适配器**：通过 React HOC 在 `useEffect` 中初始化 Vue 实例，实现 Props 同步与事件桥接。\n- **syncCacheProvider 机制**：\n  - **SSR 阶段**：阻塞渲染执行 fetcher，将结果存入 `lifecycleCache` 并序列化至 HTML 的 JSON 状态中。\n  - **CSR 阶段**：首屏加载从 JSON 恢复缓存，`syncCacheProvider` 命中缓存后同步返回数据，彻底消除首屏白屏或闪烁。若无缓存则退化为异步 Promise。\n- **性能优化**：支持 `loading=\"lazy\"` 按需激活（Hydration），仅在进入视口时初始化运行时，提升 TTI。",
+        "mimeType": "text/markdown"
       }
     ]
   }
