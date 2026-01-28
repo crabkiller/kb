@@ -29,8 +29,10 @@ router.post('/collect', async (ctx) => {
   try {
     const content = await fs.readFile(file.filepath, 'utf8');
     const title = bodyTitle || file.originalFilename.replace(/\.md$/, '');
+    console.log('title', title);
 
     const result = await storage.saveKnowledge(title, content, tags);
+    console.log('result', result);
     ctx.body = {
       message: 'Knowledge collected successfully',
       data: result

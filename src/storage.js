@@ -39,7 +39,8 @@ class Storage {
     await this.init();
 
     const filePath = path.join(this.basePath, filename.endsWith('.md') ? filename : `${filename}.md`);
-    
+    console.log('filePath', filePath);
+
     // 1. 写入文件
     await fs.writeFile(filePath, content, 'utf8');
 
@@ -65,7 +66,7 @@ class Storage {
     if (summaryMatch && summaryMatch[1]) {
       return summaryMatch[1].trim();
     }
-    
+
     // 如果没有找到核心知识点章节，尝试提取前 500 字符作为摘要
     const cleanContent = content.replace(/^#.*\n/, '').trim();
     return cleanContent.substring(0, 500) + (cleanContent.length > 500 ? '...' : '');
